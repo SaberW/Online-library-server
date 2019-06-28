@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/online_bookstore?useUnicode=true&characterEncoding=utf8&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC
+    username: root
+    password: root
+server:
+  port: 9090
+
+# 去除控制台打印 swagger异常AbstractSerializableParameter（以下配置去掉不影响正常使用，但是控制台会报异常）
+logging:
+  level:
+      io.swagger.models.parameters.AbstractSerializableParameter: error
+
+# mybatis-plus相关配置
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapping/*Mapper.xml
+  type-aliases-package: com.jeanswest.onlinelibrary.entity
+
+#是否激活 swagger true or false
+swagger:
+  is:
+    enable: true
