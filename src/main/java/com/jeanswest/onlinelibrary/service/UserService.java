@@ -1,8 +1,7 @@
 package com.jeanswest.onlinelibrary.service;
 
-import com.jeanswest.onlinelibrary.mapper.UserDao;
-import com.jeanswest.onlinelibrary.entity.LoginVO;
 import com.jeanswest.onlinelibrary.entity.UserDTO;
+import com.jeanswest.onlinelibrary.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,29 +15,33 @@ import java.util.List;
 @Service
 public class UserService {
     @Autowired
-    private UserDao userDao;
+    private UserMapper userMapper;
 
     public List<UserDTO> getUsers() {
-        return userDao.listUser();
+        return userMapper.listUser();
     }
 
     public UserDTO getUserById(Integer id) {
-        return userDao.getUserById(id);
+        return userMapper.getUserById(id);
     }
 
     public Object saveUser(UserDTO user) {
-       return userDao.saveUser(user);
+       return userMapper.saveUser(user);
     }
 
     public Object delUserById(Integer id) {
-        return userDao.deleteById(id);
+        return userMapper.deleteById(id);
     }
 
     public Object putUserById(UserDTO user) {
-       return userDao.updateUserById(user);
+       return userMapper.updateUserById(user);
     }
 
-    public Integer login(LoginVO loginVO){
-        return userDao.login(loginVO);
+    public Integer login(UserDTO userDTO){
+        return userMapper.login(userDTO);
+    }
+
+    public List<UserDTO> findAll(){
+        return userMapper.findAll();
     }
 }

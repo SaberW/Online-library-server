@@ -5,6 +5,8 @@ import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
+import java.util.List;
+
 
 /**
  * @author :肖钊容
@@ -35,4 +37,6 @@ public class UserDTO {
 
     @ApiModelProperty(value="用户注册时间",name="registrationDate",example="2019-06-11 22:34:30")
     private String registrationDate;
+
+    private List<DownloadRecordDTO> downloadRecords;
 }

@@ -12,8 +12,8 @@ import lombok.Data;
 @Data
 @TableName("download_record")
 public class DownloadRecordDTO {
-    private Integer id;
-    private Integer user_fk;
-    private Integer book_fk;
-    private String save_date;
+    private Integer did;
+    private Integer userFk;
+    private Integer bookFk;
+    private String saveDate;
 }

@@ -1,10 +1,9 @@
 package com.jeanswest.onlinelibrary.controller;
 
-import com.jeanswest.onlinelibrary.entity.LoginVO;
-import com.jeanswest.onlinelibrary.entity.ResultData;
 import com.jeanswest.onlinelibrary.entity.UserDTO;
 import com.jeanswest.onlinelibrary.service.UserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -18,12 +17,9 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @Api(tags = {"用户相关操作"})
 public class UserController {
-    
-    @Autowired
-    private UserService userService;
 
     @Autowired
-    private ResultData resultData;
+    private UserService userService;
 
     @GetMapping("users")
     public Object getUsers() {
@@ -31,7 +27,7 @@ public class UserController {
     }
 
     @GetMapping("user/{id}")
-    public Object getUserById(@ApiParam("用户Id") @PathVariable(value = "id", required = true )Integer id) {
+    public Object getUserById(@ApiParam("用户Id") @PathVariable(value = "id", required = true) Integer id) {
         return userService.getUserById(id);
     }
 
@@ -48,12 +44,17 @@ public class UserController {
     @PutMapping("user")
     public Object putUserById(@RequestBody UserDTO user) {
         return userService.putUserById(user);
-    }    
+    }
 
+    @ApiOperation("填写username 与password 登录成功返回用户ID")
     @PostMapping("login")
-    public ResultData login(@RequestBody LoginVO loginVO){
-        Integer userCount = userService.login(loginVO);
-        resultData.setData(userCount);
-        return resultData;
+    public Object login(@RequestBody UserDTO user) {
+        Integer userId = userService.login(user);
+        return userId;
+    }
+
+    @GetMapping("findAll")
+    public Object findAll() {
+        return userService.findAll();
     }
 }

@@ -1,10 +1,16 @@
 package com.jeanswest.onlinelibrary.mapper;
-import com.jeanswest.onlinelibrary.entity.LoginVO;
 import com.jeanswest.onlinelibrary.entity.UserDTO;
-import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.annotations.Delete;
+import org.apache.ibatis.annotations.Insert;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
+
 import java.util.List;
 
-public interface UserDao {
+/**
+ * 用户相关操作
+ */
+public interface UserMapper {
     @Insert(value = "INSERT INTO user(id,username,password) VALUES(#{id},#{username},#{password})")
     Integer saveUser(UserDTO user);
 
@@ -20,7 +26,8 @@ public interface UserDao {
     @Select(value = "SELECT * FROM user")
     List<UserDTO> listUser();
 
-    @Select(value = "SELECT COUNT(`user`.id ) FROM `user` WHERE  `user`.username = #{username}  AND `user`.`password` = #{password}")
-    Integer login(LoginVO loginVO);
+    @Select(value = "SELECT `user`.id  FROM `user` WHERE  `user`.username = #{username}  AND `user`.`password` = #{password}")
+    Integer login(UserDTO userDTO);
 
+    List<UserDTO> findAll();
 }

@@ -19,8 +19,12 @@ public class DownloadRecordService {
     @Autowired
     DownloadRecordMapper downloadRecordMapper;
 
-    public void test1(){
-     List <DownloadRecordDTO> list = downloadRecordMapper.selectList(null);
-     System.out.println(list);
+    public List<DownloadRecordDTO> getDownloadList(){
+     List <DownloadRecordDTO> downloadRecordDTOList = downloadRecordMapper.selectList(null);
+     return downloadRecordDTOList;
+    }
+
+    public Object getDownloadListByUserID(Integer userId) {
+      return "null";
     }
 }
