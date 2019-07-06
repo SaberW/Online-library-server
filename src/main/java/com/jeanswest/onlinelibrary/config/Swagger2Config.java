@@ -4,12 +4,18 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import springfox.documentation.builders.ApiInfoBuilder;
+import springfox.documentation.builders.ParameterBuilder;
 import springfox.documentation.builders.PathSelectors;
 import springfox.documentation.builders.RequestHandlerSelectors;
+import springfox.documentation.schema.ModelRef;
 import springfox.documentation.service.ApiInfo;
+import springfox.documentation.service.Parameter;
 import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author :肖钊容
@@ -27,15 +33,28 @@ public class Swagger2Config {
         @Value("${swagger.is.enable}")
         private boolean swagger_is_enable;
 
-       @Bean
+        @Bean
         public Docket createRestApi() {
+
+            //添加请求头
+            ParameterBuilder ticketPar = new ParameterBuilder();
+            List<Parameter> pars = new ArrayList<Parameter>();
+            //name表示名称，description表示描述
+            ticketPar.name("Authorization").description("登录校验")
+                    .modelRef(new ModelRef("string")).parameterType("header")
+                    //required表示是否必填，defaultvalue表示默认值
+                    .required(false).defaultValue("Bearer ").build();
+            //添加完此处一定要把 globalOperationParameters(pars);也加上否则不生效
+            pars.add(ticketPar.build());
+
             return new Docket(DocumentationType.SWAGGER_2)
                     .enable(swagger_is_enable)
                     .apiInfo(apiInfo())
                     .select()
                     .apis(RequestHandlerSelectors.basePackage("com"))
                     .paths(PathSelectors.any())
-                    .build();
+                    .build()
+                    .globalOperationParameters(pars);
         }
 
         private ApiInfo apiInfo() {

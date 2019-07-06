@@ -26,8 +26,8 @@ public interface UserMapper {
     @Select(value = "SELECT * FROM user")
     List<UserDTO> listUser();
 
-    @Select(value = "SELECT `user`.id  FROM `user` WHERE  `user`.username = #{username}  AND `user`.`password` = #{password}")
-    Integer login(UserDTO userDTO);
+    @Select(value = "SELECT * FROM `user` WHERE  `user`.username = #{username}  AND `user`.`password` = #{password}")
+    UserDTO login(String username,String password);
 
     List<UserDTO> findAll();
 }

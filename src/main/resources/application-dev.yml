@@ -20,7 +20,7 @@ mybatis-plus:
   mapper-locations: classpath:mapper/*Mapper.xml
   type-aliases-package: com.jeanswest.onlinelibrary.entity
 
-#是否激活 swagger true or false
+#是否激活 swagger
 swagger:
   is:
     enable: true

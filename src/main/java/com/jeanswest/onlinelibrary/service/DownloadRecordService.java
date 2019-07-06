@@ -27,4 +27,8 @@ public class DownloadRecordService {
     public Object getDownloadListByUserID(Integer userId) {
       return "null";
     }
+
+    public Object saveDownloadRecord(DownloadRecordDTO downloadRecordDTO) {
+        return downloadRecordMapper.insert(downloadRecordDTO);
+    }
 }

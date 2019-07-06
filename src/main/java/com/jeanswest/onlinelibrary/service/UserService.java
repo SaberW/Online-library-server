@@ -1,11 +1,15 @@
 package com.jeanswest.onlinelibrary.service;
 
+import com.alibaba.fastjson.JSONObject;
+import com.jeanswest.onlinelibrary.entity.ResultData;
 import com.jeanswest.onlinelibrary.entity.UserDTO;
 import com.jeanswest.onlinelibrary.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * @author :肖钊容
@@ -26,7 +30,7 @@ public class UserService {
     }
 
     public Object saveUser(UserDTO user) {
-       return userMapper.saveUser(user);
+        return userMapper.saveUser(user);
     }
 
     public Object delUserById(Integer id) {
@@ -34,14 +38,27 @@ public class UserService {
     }
 
     public Object putUserById(UserDTO user) {
-       return userMapper.updateUserById(user);
+        return userMapper.updateUserById(user);
     }
 
-    public Integer login(UserDTO userDTO){
-        return userMapper.login(userDTO);
+    public ResultData login(String username, String password, HttpServletRequest request) {
+        UserDTO userDTO = userMapper.login(username, password);
+
+        if (null != userDTO) {
+            String userUUID = userDTO.getId() + "-" + UUID.randomUUID().toString();
+            request.getSession().setAttribute(userUUID, userDTO);
+
+            JSONObject jsonObject = new JSONObject();
+            jsonObject.put("Authorization", userUUID);
+            jsonObject.put("username", userDTO.getUsername());
+            jsonObject.put("userid", userDTO.getId());
+            return ResultData.success("请求成功", jsonObject);
+        } else {
+            return ResultData.warn("警告", "账号或密码错误");
+        }
     }
 
-    public List<UserDTO> findAll(){
+    public List<UserDTO> findAll() {
         return userMapper.findAll();
     }
 }

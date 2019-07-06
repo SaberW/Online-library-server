@@ -14,7 +14,7 @@
 	</resultMap>
 
 	<select id="findAll" resultMap="userBorrowBooks">
-		SELECT u.*,d.id did
+		SELECT *
 		FROM user u
 			LEFT OUTER JOIN download_record d
 			ON u.id = d.user_fk WHERE u.username = '小白'
