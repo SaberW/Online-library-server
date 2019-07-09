@@ -2,6 +2,26 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.jeanswest.onlinelibrary.mapper.BookMapper">
 
+	<select id="selectPageVo" resultType="com.jeanswest.onlinelibrary.entity.BookDTO">
+          SELECT
+			book.id,
+			book.book_name AS bookName,
+			book.category,
+			book.publishing_house AS publishingHouse,
+			book.download_link AS downloadLink,
+			book.download_password AS downloadPassword,
+			book.hold_time AS holdTime,
+			book.click_rate AS clickRate,
+			book.download_count AS downloadCount,
+			book.author,
+			book.`status`,
+			book.`describe`
+		FROM book
+		<if test="bookName != null">
+            WHERE book_name LIKE "%"#{bookName}"%"
+        </if>
+	</select>
+
     <select id="selectBooks" resultType="com.jeanswest.onlinelibrary.entity.BookDTO">
        SELECT
 			book.id,
@@ -87,7 +107,8 @@
 		FROM book  where book_name  LIKE "%"#{bookName}"%"
     </select>
 
-    <insert id="insertBook" parameterType="com.jeanswest.onlinelibrary.entity.BookDTO" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insertBook" parameterType="com.jeanswest.onlinelibrary.entity.BookDTO" useGeneratedKeys="true"
+            keyProperty="id">
         INSERT INTO book(
 		book.book_name,
 		book.category,
@@ -115,7 +136,8 @@
 	)
     </insert>
 
-    <update id="updateBookById" parameterType="com.jeanswest.onlinelibrary.entity.BookDTO" useGeneratedKeys="true" keyProperty="id">
+    <update id="updateBookById" parameterType="com.jeanswest.onlinelibrary.entity.BookDTO" useGeneratedKeys="true"
+            keyProperty="id">
         UPDATE book
 		SET book.book_name	= #{bookName},
 		 book.category= #{category},
@@ -131,7 +153,7 @@
 	    WHERE id = #{id}
     </update>
 
-    <delete id="deleteBookById" parameterType="java.lang.Integer" >
+    <delete id="deleteBookById" parameterType="java.lang.Integer">
         DELETE FROM book WHERE id = #{id}
     </delete>
 

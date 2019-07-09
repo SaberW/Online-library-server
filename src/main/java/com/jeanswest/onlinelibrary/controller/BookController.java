@@ -1,5 +1,6 @@
 package com.jeanswest.onlinelibrary.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jeanswest.onlinelibrary.entity.BookDTO;
 import com.jeanswest.onlinelibrary.entity.ResultData;
 import com.jeanswest.onlinelibrary.service.BookService;
@@ -18,10 +19,38 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/book/")
 @Api(tags = "书籍相关接口")
-public class BookController{
+public class BookController {
 
     @Autowired
     private BookService bookService;
+
+    @ApiOperation("分页获取书籍")
+    @GetMapping("paging/{current}")
+    public ResultData getBooksPaging(@PathVariable Integer current) {
+        try {
+            if (null == current) {
+                current = 1;
+            }
+            Page<BookDTO> page = new Page<BookDTO>(current, 10);
+            return ResultData.success("请求成功", bookService.selectUserPage(page, null));
+        } catch (Exception e) {
+            return ResultData.error("请求失败", e.getMessage());
+        }
+    }
+
+    @ApiOperation("根据名字获取书籍带分页")
+    @GetMapping("{bookName}/paging/{current}")
+    public ResultData getBooksByBookNamePaging(@PathVariable("bookName") String bookName ,@PathVariable("current") Integer current) {
+        try {
+            if (null == current) {
+                current = 1;
+            }
+            Page<BookDTO> page = new Page<BookDTO>(current, 10);
+            return ResultData.success("请求成功", bookService.selectUserPage(page, bookName));
+        } catch (Exception e) {
+            return ResultData.error("请求失败", e.getMessage());
+        }
+    }
 
     @ApiOperation("获取全部书籍")
     @GetMapping("list")
@@ -57,7 +86,7 @@ public class BookController{
     @GetMapping("category")
     public ResultData getBookByCategory(@RequestParam String category) {
         try {
-            return ResultData.success("请求成功",bookService.getBookByCategory(category));
+            return ResultData.success("请求成功", bookService.getBookByCategory(category));
         } catch (Exception e) {
             return ResultData.error("请求失败", e.getMessage());
         }
@@ -68,7 +97,7 @@ public class BookController{
     public ResultData getBookByName(@RequestParam String bookName) {
 
         try {
-            return ResultData.success("请求成功",  bookService.getBookByName(bookName));
+            return ResultData.success("请求成功", bookService.getBookByName(bookName));
         } catch (Exception e) {
             return ResultData.error("请求失败", e.getMessage());
         }
@@ -78,7 +107,7 @@ public class BookController{
     @GetMapping("{bookName}/{category}/{author}")
     public ResultData getBookByNameOrCategoryOrAuthor(String bookName, String category, String author) {
         try {
-            return ResultData.success("请求成功",bookService.getBookByNameOrCategoryOrAuthor(bookName, category, author));
+            return ResultData.success("请求成功", bookService.getBookByNameOrCategoryOrAuthor(bookName, category, author));
         } catch (Exception e) {
             return ResultData.error("请求失败", e.getMessage());
         }
@@ -88,7 +117,7 @@ public class BookController{
     @PostMapping("")
     public ResultData saveBook(@RequestBody BookDTO book) {
         try {
-            return ResultData.success("请求成功",bookService.saveBook(book));
+            return ResultData.success("请求成功", bookService.saveBook(book));
         } catch (Exception e) {
             return ResultData.error("请求失败", e.getMessage());
         }
@@ -98,7 +127,7 @@ public class BookController{
     @DeleteMapping("{id}")
     public ResultData delBookById(@ApiParam("书籍Id") @PathVariable(value = "id", required = true) Integer id) {
         try {
-            return ResultData.success("请求成功",bookService.delBookById(id));
+            return ResultData.success("请求成功", bookService.delBookById(id));
         } catch (Exception e) {
             return ResultData.error("请求失败", e.getMessage());
         }
