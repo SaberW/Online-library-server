@@ -16,6 +16,7 @@ import java.io.PrintWriter;
  */
 public class DownloadInterceptor extends HandlerInterceptorAdapter {
     private final String POST = "POST";
+    private final String GET = "GET";
     private String authorization = "";
 
     /**
@@ -24,13 +25,13 @@ public class DownloadInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         authorization = request.getHeader("Authorization");
-        if (POST.equals(request.getMethod())) {
+        if (GET.equals(request.getMethod())) {
             if (null != request.getSession().getAttribute(authorization)) {
                 return true;
             } else {
                 response.setContentType("application/json;charset=utf-8");
                 PrintWriter out = response.getWriter();
-                out.write(JSONObject.toJSONString(ResultData.warn("请登录")));
+                out.write(JSONObject.toJSONString(ResultData.warn("请登录!")));
                 out.flush();
                 out.close();
                 return false;

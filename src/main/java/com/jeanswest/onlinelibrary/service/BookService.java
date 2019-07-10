@@ -5,8 +5,17 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.jeanswest.onlinelibrary.entity.BookDTO;
 import com.jeanswest.onlinelibrary.mapper.BookMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -20,6 +29,35 @@ public class BookService {
     @Autowired
     BookMapper bookMapper;
 
+    /**
+     * 下载书籍
+     */
+    public ResponseEntity<InputStreamResource> downloadBook(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        BookDTO book = bookMapper.selectBookById(id);
+        System.out.println(book);
+        String filePath = book.getDescribe();
+        String newURL = filePath.replaceAll("\\\\","/");
+        System.out.println(newURL);
+
+        FileSystemResource file = new FileSystemResource(filePath);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Cache-Control", "no-cache, no-store, must-revalidate");
+        headers.add("Content-Disposition", String.format("attachment; filename=\"%s\"", file.getFilename()));
+        headers.add("Pragma", "no-cache");
+        headers.add("Expires", "0");
+
+        return ResponseEntity
+                .ok()
+                .headers(headers)
+                .contentLength(file.contentLength())
+                .contentType(MediaType.parseMediaType("application/octet-stream"))
+                .body(new InputStreamResource(file.getInputStream()));
+    }
+
+
+    /**
+     * 根据名称分页获取书籍
+     */
     public IPage<BookDTO> selectUserPage(Page<BookDTO> page, String bookName) {
         // 不进行 count sql 优化，解决 MP 无法自动优化 SQL 问题，这时候你需要自己查询 count 部分
         // page.setOptimizeCountSql(false);

@@ -8,7 +8,14 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 /**
  * @author :肖钊容
@@ -23,6 +30,27 @@ public class BookController {
 
     @Autowired
     private BookService bookService;
+
+
+    @Value("${downloadUrl}")
+    private String downloadPath ;
+
+    @ApiOperation("书籍下载")
+    @GetMapping("downloadUrl/{id}")
+    public ResultData downloadUrl(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        try {
+           String downloadUrl = downloadPath+ "/api/book/download/" +id;
+            return ResultData.success("请求成功",downloadUrl);
+        } catch (Exception e) {
+            return ResultData.error("请求失败", e.getMessage());
+        }
+    }
+
+    @ApiOperation("书籍下载")
+    @GetMapping("download/{id}")
+    public ResponseEntity<InputStreamResource> downloadBook(@PathVariable Integer id, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        return bookService.downloadBook(id,request,response);
+    }
 
     @ApiOperation("分页获取书籍")
     @GetMapping("paging/{current}")
@@ -40,7 +68,7 @@ public class BookController {
 
     @ApiOperation("根据名字获取书籍带分页")
     @GetMapping("{bookName}/paging/{current}")
-    public ResultData getBooksByBookNamePaging(@PathVariable("bookName") String bookName ,@PathVariable("current") Integer current) {
+    public ResultData getBooksByBookNamePaging(@PathVariable("bookName") String bookName, @PathVariable("current") Integer current) {
         try {
             if (null == current) {
                 current = 1;

@@ -24,3 +24,6 @@ mybatis-plus:
 swagger:
   is:
     enable: true
+
+#文件服务器地址
+downloadUrl: http://172.20.51.84:9090

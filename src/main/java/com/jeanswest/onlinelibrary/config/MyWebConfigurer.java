@@ -14,6 +14,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class MyWebConfigurer implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new DownloadInterceptor()).addPathPatterns("/api/DownloadRecords/");
+        registry.addInterceptor(new DownloadInterceptor())
+                .addPathPatterns("/api/DownloadRecords/","/api/book/downloadUrl/**");
     }
 }
