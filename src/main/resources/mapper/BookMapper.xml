@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xzr.onlinelibrary.mapper.BookMapper">
+    <select id="getBookByName" parameterType="java.lang.String" resultType="com.xzr.onlinelibrary.entity.Book">
+        SELECT
+        id,
+        book_name AS bookName,
+        category,
+        format,
+        publishing_house AS publishingHouse,
+        download_link AS downloadLink,
+        download_password AS downloadPassword,
+        book_img_path AS bookImgPath,
+        book_path AS bookPath,
+        hold_time AS holdTime,
+        click_rate clickRate,
+        download_count AS downloadCount,
+        author,
+        book_status AS bookStatus,
+        book_describe AS bookDescribe,
+        book_size AS bookSize
+        FROM book
+            WHERE book_name LIKE "%"#{bookName}"%";
+    </select>
+</mapper>
