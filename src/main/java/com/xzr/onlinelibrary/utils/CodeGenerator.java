@@ -1,4 +1,4 @@
-package com;
+package com.xzr.onlinelibrary.utils;
 
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
@@ -31,7 +31,7 @@ public class CodeGenerator {
         // 生成文件的输出目录
         gc.setOutputDir(projectPath + "/src/main/java");
         // 开发人员
-        gc.setAuthor("肖钊容");
+        gc.setAuthor("xzr");
         // 是否打开输出目录
         gc.setOpen(false);
         // 实体属性 Swagger2 注解
@@ -54,7 +54,7 @@ public class CodeGenerator {
         PackageConfig pc = new PackageConfig();
         //pc.setModuleName("com.demo");
         // pc.setModuleName(scanner("模块名"));
-         pc.setParent("com.demo");
+         pc.setParent("com.xzr.onlinelibrary");
         mpg.setPackageInfo(pc);
 
         // 自定义配置
