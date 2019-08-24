@@ -17,7 +17,7 @@ import java.util.Scanner;
 /**
  * @author :肖钊容
  * @date :2019-06-27 17:05
- * @description :
+ * @description : MyBatis 代码生成器
  */
 public class CodeGenerator {
 
