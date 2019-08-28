@@ -36,9 +36,41 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements IB
     @Value("${booksImsPath}")
     String imgRoot;
 
+    public List<Book> getBooks(){
+        List <Book> books = bookMapper.getBooks();
+        return books;
+    }
+
     public List<Book> getBookByName(String bookName) {
         List<Book> books = bookMapper.getBookByName(bookName);
         return books;
+    }
+
+    public List<Book> getBookByNumber(Integer number){
+        List <Book> books = bookMapper.getBooksByTopNumber(number);
+        return books;
+    }
+
+    public Integer soldOutBookById(Integer bookId){
+        Integer state = bookMapper.updateStatusById(-1,bookId);
+        return state;
+    }
+
+    /**
+     * 推荐书籍
+     * @param id
+     */
+    public Integer recommendBookById(Integer id) {
+        Integer state = bookMapper.updateStatusById(2,id);
+        return state;
+    }
+
+    /**
+     * 更新点击量
+     * @param id
+     */
+    public void upClickRate(Integer id) {
+        Integer state = bookMapper.upClickRateById(1,id);
     }
 
     public String getBookImg (Integer bookId, Integer page, HttpServletResponse rp) {
@@ -137,4 +169,6 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements IB
         }
         return null;
     }
+
+
 }

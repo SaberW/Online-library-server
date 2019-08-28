@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.xzr.onlinelibrary.mapper.BookMapper">
-    <select id="getBookByName" parameterType="java.lang.String" resultType="com.xzr.onlinelibrary.entity.Book">
-        SELECT
-        id,
+    <sql id="user">
+          id,
         book_name AS bookName,
         category,
         format,
@@ -19,7 +18,36 @@
         book_status AS bookStatus,
         book_describe AS bookDescribe,
         book_size AS bookSize
+    </sql>
+    
+    <select id="getBookByName"  resultType="com.xzr.onlinelibrary.entity.Book">
+        SELECT
+            <include refid="user"></include>
         FROM book
+        <if test="bookName != null">
             WHERE book_name LIKE "%"#{bookName}"%";
+        </if>
     </select>
+
+    <select id="getBooks" resultType="com.xzr.onlinelibrary.entity.Book">
+        SELECT
+        <include refid="user"></include>
+        FROM book  ORDER BY click_rate DESC
+    </select>
+
+    <select id="getBooksByTopNumber" resultType="com.xzr.onlinelibrary.entity.Book">
+        SELECT
+        <include refid="user"></include>
+        FROM book
+        WHERE book_status = 1
+        LIMIT #{number}
+    </select>
+
+    <update id="updateStatusById" >
+        UPDATE book SET book_status = #{status} WHERE id = #{bookId}
+    </update>
+
+    <update id="upClickRateById">
+        UPDATE book SET click_rate = (click_rate + #{hist}) WHERE id = #{id}
+    </update>
 </mapper>

@@ -72,7 +72,7 @@ public class Book implements Serializable {
     private String author;
 
     @ApiModelProperty(value = "资源是否有效 0（无效） 1（有效）")
-    private Boolean bookStatus;
+    private Integer bookStatus;
 
     @ApiModelProperty(value = "备注")
     private String bookDescribe;

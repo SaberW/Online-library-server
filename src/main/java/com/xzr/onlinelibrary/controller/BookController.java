@@ -5,6 +5,8 @@ import com.xzr.onlinelibrary.entity.Book;
 import com.xzr.onlinelibrary.entity.ResultData;
 import com.xzr.onlinelibrary.service.IBookService;
 import com.xzr.onlinelibrary.service.impl.BookServiceImpl;
+import io.swagger.models.auth.In;
+import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,6 +24,7 @@ import java.util.List;
  * @author xzr
  * @since 2019-08-21
  */
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("/api/book")
 public class BookController {
@@ -34,7 +37,13 @@ public class BookController {
 
     @GetMapping("/list")
     public List<Book> getBooks() {
-        List<Book> books = iBookService.list();
+        List<Book> books = bookService.getBooks();
+        return books;
+    }
+
+    @GetMapping("/top/{number}")
+    public List<Book> BookByTopNumber(@PathVariable("number") Integer number) {
+        List<Book> books = bookService.getBookByNumber(number);
         return books;
     }
 
@@ -57,10 +66,38 @@ public class BookController {
             @PathVariable("bookId") Integer bookId,
             @PathVariable("page") Integer page,
             HttpServletResponse rp) {
-        try{
+        try {
+            System.out.println("获取图片");
             bookService.getBookImg(bookId, page, rp);
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    /**
+     * 下架书籍
+     * @param bookId
+     */
+    @DeleteMapping("/{bookId}")
+    public void deleteBook(@PathVariable("bookId") Integer bookId){
+       bookService.soldOutBookById(bookId);
+    }
+
+    /**
+     * 推荐书籍
+     * @param book
+     */
+    @PutMapping("/recommend")
+    public void recommendBook(@RequestBody Book book){
+        bookService.recommendBookById(book.getId());
+    }
+
+    /**
+     * 更新点击量
+     * @param book
+     */
+    @PutMapping("/click")
+    public void upClickRate(@RequestBody Book book){
+        bookService.upClickRate(book.getId());
     }
 }
