@@ -26,8 +26,8 @@ public class Book implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    @TableId(value = "bId", type = IdType.AUTO)
+    private Integer bId;
 
     @ApiModelProperty(value = "前端显示的界面")
     private String newBookName;

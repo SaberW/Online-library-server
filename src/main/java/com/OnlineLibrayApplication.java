@@ -5,7 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
- * @author :肖钊容
+ * @author : xzr
  * @date :2019-06-08 23:50
  * @description :线上图书馆启动类
  */

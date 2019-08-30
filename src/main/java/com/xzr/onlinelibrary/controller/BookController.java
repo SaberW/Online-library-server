@@ -89,7 +89,7 @@ public class BookController {
      */
     @PutMapping("/recommend")
     public void recommendBook(@RequestBody Book book){
-        bookService.recommendBookById(book.getId());
+        bookService.recommendBookById(book.getBId());
     }
 
     /**
@@ -98,6 +98,6 @@ public class BookController {
      */
     @PutMapping("/click")
     public void upClickRate(@RequestBody Book book){
-        bookService.upClickRate(book.getId());
+        bookService.upClickRate(book.getBId());
     }
 }

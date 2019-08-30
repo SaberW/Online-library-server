@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xzr.onlinelibrary.mapper.UserMapper">
+
+    <resultMap id="myUser" type="com.xzr.onlinelibrary.entity.User">
+        <id column="uid" property="uId"/>
+        <!-- 数据库列名 与 实体字段的映射  其他不指定的列名会自动封装 -->
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="grade" property="grade"/>
+        <result column="registration_date" property="registrationDate"/>
+        <result column="last_login" property="lastLogin"/>
+        <result column="account_status" property="accountStatus"/>
+        <!-- 级联查询用户的下载记录 1对1-->
+        <!--<association property="userDownloadRecord"
+                     select="com.xzr.onlinelibrary.mapper.DownloadRecordMapper.getDownloadRecordByUserId"
+                     column="id"/>-->
+        <!-- 1对多 -->
+        <collection
+                property="userDownloadRecord"
+                ofType="com.xzr.onlinelibrary.entity.DownloadRecord"
+                select="com.xzr.onlinelibrary.mapper.DownloadRecordMapper.getDownloadRecordByUserId"
+                column="uid">
+        </collection>
+    </resultMap>
+
+    <select id="getUsers" resultMap="myUser">
+        SELECT * FROM user
+    </select>
+
+    <select id="getUserDownloadRecord" resultMap="myUser">
+        SELECT * FROM user WHERE uid = #{userId}
+    </select>
+
+    <select id="getUserById" resultType="com.xzr.onlinelibrary.entity.User">
+        SELECT * FROM user WHERE uid = #{userId}
+    </select>
+</mapper>
