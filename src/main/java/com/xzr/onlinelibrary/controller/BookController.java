@@ -1,10 +1,12 @@
 package com.xzr.onlinelibrary.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xzr.onlinelibrary.entity.Book;
 import com.xzr.onlinelibrary.entity.ResultData;
 import com.xzr.onlinelibrary.service.IBookService;
 import com.xzr.onlinelibrary.service.impl.BookServiceImpl;
+import io.swagger.annotations.ApiOperation;
 import io.swagger.models.auth.In;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,6 +36,16 @@ public class BookController {
     @Autowired
     BookServiceImpl bookService;
 
+    @ApiOperation("分页获取书籍")
+    @GetMapping("page/{pageNum}/{size}")
+    public ResultData getBooksPaging(@PathVariable Integer pageNum,@PathVariable Integer size) {
+        try {
+            Page<Book> page = new Page<Book>(pageNum, size);
+            return ResultData.success("请求成功", bookService.selectBookPage(page, null));
+        } catch (Exception e) {
+            return ResultData.error("请求失败", e.getMessage());
+        }
+    }
 
     @GetMapping("/list")
     public List<Book> getBooks() {

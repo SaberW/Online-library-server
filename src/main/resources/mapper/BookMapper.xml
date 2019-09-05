@@ -20,6 +20,18 @@
         book_size AS bookSize
     </sql>
 
+    <select id="selectPageVo" resultType="com.xzr.onlinelibrary.entity.Book">
+        SELECT
+        <include refid="book"></include>
+        FROM book
+            <where>
+                <if test="bookName != null">
+                    book_name LIKE "%"#{bookName}"%"
+                </if>
+            </where>
+            ORDER BY click_rate DESC
+        </select>
+
     <select id="getBookByName" resultType="com.xzr.onlinelibrary.entity.Book">
         SELECT
         <include refid="book"></include>

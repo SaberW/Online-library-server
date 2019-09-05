@@ -1,5 +1,7 @@
 package com.xzr.onlinelibrary.service.impl;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.xzr.onlinelibrary.entity.Book;
 import com.xzr.onlinelibrary.mapper.BookMapper;
 import com.xzr.onlinelibrary.service.IBookService;
@@ -35,6 +37,14 @@ public class BookServiceImpl extends ServiceImpl<BookMapper, Book> implements IB
 
     @Value("${booksImsPath}")
     String imgRoot;
+
+    public IPage<Book> selectBookPage(Page<Book> page, String bookName) {
+        // 不进行 count sql 优化，解决 MP 无法自动优化 SQL 问题，这时候你需要自己查询 count 部分
+        // page.setOptimizeCountSql(false);
+        // 当 total 为非 0 时(默认为 0),分页插件不会进行 count 查询
+        // 要点!! 分页返回的对象与传入的对象是同一个
+        return bookMapper.selectPageVo(page, bookName);
+    }
 
     public List<Book> getBooks(){
         List <Book> books = bookMapper.getBooks();
